@@ -8,15 +8,15 @@ public class ProductFactory {
 
 		if (depo.equals("DepoA")) {
 
-			return DepoASingleton.getInstance();
+			return new DepoASingleton(Product.getProduct.PRODUCTA, Product.getProduct.PRODUCTB, Product.getProduct.PRODUCTC);
 		}
 		else if (depo.equals("DepoB")) {
 
-			return DepoBSingleton.getInstance();
+			return new DepoBSingleton(Product.getProduct.PRODUCTB, Product.getProduct.PRODUCTA, Product.getProduct.PRODUCTC);
 		}
 		else if (depo.equals("DepoC")) {
 
-			return DepoCSingleton.getInstance();
+			return new DepoCSingleton(Product.getProduct.PRODUCTC, Product.getProduct.PRODUCTA, Product.getProduct.PRODUCTB);
 		}
 
 		return null;

@@ -20,7 +20,7 @@ public class DepoASingleton extends Depo {
 
 	}
 
-	private DepoASingleton(getProduct producta, getProduct productb, getProduct productc) {
+	public DepoASingleton(getProduct producta, getProduct productb, getProduct productc) {
 		// Filling the Native products on the start
 		Random random = new Random();
 		quantNative = random.nextInt(maxNative - minNative) + minNative;
@@ -29,6 +29,7 @@ public class DepoASingleton extends Depo {
 
 			ProductNative.add(producta);
 		}
+//		System.out.println(ProductNative);
 
 		// Filling the externalProducts at the start
 		quantExternal1 = random.nextInt(maxExternal1 - minExternal1) + minExternal1;
@@ -37,16 +38,21 @@ public class DepoASingleton extends Depo {
 
 			ProductExternal1.add(productb);
 		}
+//		System.out.println(ProductExternal1);
 
 		// Filling the externalProducts2 at the start
 		quantExternal2 = random.nextInt(maxExternal2 - minExternal2) + minExternal2;
-//		System.out.println(quantExternal1);
+//		System.out.println(quantExternal2);
 		for (int i = 0; i < quantExternal2; i++) {
 
 			ProductExternal2.add(productc);
 		}
+//		System.out.println(ProductExternal2);
 		
+		priceDelivery = random.nextInt(maxPrice - minPrice) + minPrice;
 		price = random.nextInt(maxPrice - minPrice) + minPrice;
+		price = price + priceDelivery;
+		budget = random.nextInt(maxBudget - minBudget) + minBudget;
 
 	}
 
@@ -54,6 +60,30 @@ public class DepoASingleton extends Depo {
 	public String toString() {
 		return ProductNative + " " + ProductExternal1 + " " + ProductExternal2 + "\n\n\n\n";
 
+	}
+	
+	public List<getProduct> getProductNative() {
+		return ProductNative;
+	}
+
+	public void setProductNative(List<getProduct> productNative) {
+		ProductNative = productNative;
+	}
+
+	public List<getProduct> getProductExternal1() {
+		return ProductExternal1;
+	}
+
+	public void setProductExternal1(List<getProduct> productExternal1) {
+		ProductExternal1 = productExternal1;
+	}
+
+	public List<getProduct> getProductExternal2() {
+		return ProductExternal2;
+	}
+
+	public void setProductExternal2(List<getProduct> productExternal2) {
+		ProductExternal2 = productExternal2;
 	}
 	
 	public static DepoASingleton getInstance() {

@@ -2,6 +2,7 @@ package commercial.trading.company;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import commercial.trading.depo.Depo;
 import commercial.trading.depo.DepoASingleton;
@@ -20,6 +21,8 @@ public class CompanyBSingleton extends Company {
 	}
 
 	public void createDepos() {
+		
+		Random random = new Random();
 		
 		Depos = new ArrayList<>();
 

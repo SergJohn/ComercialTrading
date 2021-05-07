@@ -7,9 +7,13 @@ import commercial.trading.depo.Product.getProduct;
 
 public abstract class Depo {
 	
+	protected double budget;
+	protected int minBudget;
+	protected int maxBudget;
 	protected double price;
 	protected int maxPrice;
 	protected int minPrice;
+	protected double priceDelivery;
 	protected int randomNum;
 	protected int minNative;
 	protected int maxNative;
@@ -23,6 +27,10 @@ public abstract class Depo {
 	protected List<getProduct> ProductExternal2 = new ArrayList<>();
 
 	public Depo() {
+		
+
+		minBudget = 50;
+		maxBudget = 100;
 		minNative = 15;
 		maxNative = 50;
 		maxExternal1= 40;
@@ -31,6 +39,32 @@ public abstract class Depo {
 		maxExternal2 = 40;
 		maxPrice = 10;
 		minPrice = 1;
+	}
+	
+
+
+	public double getBudget() {
+		return budget;
+	}
+
+	public void setBudget(double budget) {
+		this.budget = budget;
+	}
+
+	public int getMinBudget() {
+		return minBudget;
+	}
+
+	public void setMinBudget(int minBudget) {
+		this.minBudget = minBudget;
+	}
+
+	public int getMaxBudget() {
+		return maxBudget;
+	}
+
+	public void setMaxBudget(int maxBudget) {
+		this.maxBudget = maxBudget;
 	}
 	
 	public int getRandomNum() {
@@ -136,6 +170,14 @@ public abstract class Depo {
 
 	public void setMaxExternal2(int maxExternal2) {
 		this.maxExternal2 = maxExternal2;
+	}
+	
+	public double getPriceDelivery() {
+		return priceDelivery;
+	}
+
+	public void setPriceDelivery(double priceDelivery) {
+		this.priceDelivery = priceDelivery;
 	}
 		
 }

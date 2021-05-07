@@ -8,31 +8,29 @@ import commercial.trading.depo.*;
 
 public class CompanyASingleton extends Company {
 	
-	List<Depo> Depos;
+	
 	
 	private static CompanyASingleton instance = null;
 		
 	// Constructor
 	private CompanyASingleton() {
-		// Calling method to populate the List of Depos
 
-		Random random = new Random();
-
-		// Getting a random budget
-		budget = random.nextInt(maxBudget - minBudget) + minBudget;
 		createDepos();
 	}
 	
 	public void createDepos() {
 		
-		Depos = new ArrayList<>();
+		Random random = new Random();
 		
+		Depos = new ArrayList<>();
 		for(int i = 0; i < count; i++) {
 			
 			Depos.add(ProductFactory.getProduct("DepoA"));
+//			System.out.println(i);
 			
 		}
 //		System.out.println(Depos);
+
 	}
 	
 	public List<Depo> getDepos() {

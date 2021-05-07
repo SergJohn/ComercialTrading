@@ -8,6 +8,7 @@ import commercial.trading.depo.Product.getProduct;
 
 public class DepoCSingleton extends Depo {
 
+	private int quantNative;
 	private int quantExternal1;
 	private int quantExternal2;
 	
@@ -17,13 +18,12 @@ public class DepoCSingleton extends Depo {
 
 	}
 
-	private DepoCSingleton(getProduct product, getProduct producta, getProduct productb) {
+	public DepoCSingleton(getProduct product, getProduct producta, getProduct productb) {
 
-		minExternal1 = 33;
 		Random random = new Random();
-		randomNum = random.nextInt(maxNative - minNative) + minNative;
+		quantNative = random.nextInt(maxNative - minNative) + minNative;
 //		System.out.println(randomNum);
-		for (int i = 0; i < randomNum; i++) {
+		for (int i = 0; i < quantNative; i++) {
 			ProductNative.add(product);
 		}
 
@@ -42,12 +42,41 @@ public class DepoCSingleton extends Depo {
 
 			ProductExternal2.add(productb);
 		}
+		
+		priceDelivery = random.nextInt(maxPrice - minPrice) + minPrice;
+		price = random.nextInt(maxPrice - minPrice) + minPrice;
+		price = price + priceDelivery;
+		budget = random.nextInt(maxBudget - minBudget) + minBudget;
 	}
 
 	@Override
 	public String toString() {
-		return ProductNative + " " + ProductExternal1 + " " + ProductExternal2;
+		return ProductNative + " " + ProductExternal1 + " " + ProductExternal2 + "\n\n\n\n";
 
+	}
+	
+	public List<getProduct> getProductNative() {
+		return ProductNative;
+	}
+
+	public void setProductNative(List<getProduct> productNative) {
+		ProductNative = productNative;
+	}
+
+	public List<getProduct> getProductExternal1() {
+		return ProductExternal1;
+	}
+
+	public void setProductExternal1(List<getProduct> productExternal1) {
+		ProductExternal1 = productExternal1;
+	}
+
+	public List<getProduct> getProductExternal2() {
+		return ProductExternal2;
+	}
+
+	public void setProductExternal2(List<getProduct> productExternal2) {
+		ProductExternal2 = productExternal2;
 	}
 	
 	public static DepoCSingleton getInstance() {
