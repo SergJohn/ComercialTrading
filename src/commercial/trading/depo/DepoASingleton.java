@@ -58,7 +58,7 @@ public class DepoASingleton extends Depo {
 
 	@Override
 	public String toString() {
-		return ProductNative + " " + ProductExternal1 + " " + ProductExternal2 + "\n\n\n\n";
+		return "DepoA";
 
 	}
 	

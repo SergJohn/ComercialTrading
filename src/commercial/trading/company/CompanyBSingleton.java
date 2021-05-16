@@ -40,6 +40,11 @@ public class CompanyBSingleton extends Company {
 		Depos = depos;
 	}
 	
+	@Override
+	public String toString() {
+		return "Company B";
+	}
+	
 	public static CompanyBSingleton getInstance() {
 
         if (instance == null) {

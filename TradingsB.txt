@@ -1,0 +1,6 @@
+ProductExternal from DepoA was bought for Company B on Sun May 16 20:59:49 IST 2021
+ProductExternal from DepoC was bought for Company B on Sun May 16 20:59:49 IST 2021
+ProductExternal from DepoA was bought for Company B on Sun May 16 20:59:49 IST 2021
+ProductExternal from DepoC was bought for Company B on Sun May 16 20:59:49 IST 2021
+ProductExternal from DepoA was bought for Company B on Sun May 16 20:59:49 IST 2021
+ProductExternal from DepoA was bought for Company B on Sun May 16 20:59:49 IST 2021

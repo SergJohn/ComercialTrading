@@ -43,6 +43,11 @@ public class CompanyCSingleton extends Company {
 		Depos = depos;
 	}
 	
+	@Override
+	public String toString() {
+		return "Company C";
+	}
+	
 	public static CompanyCSingleton getInstance() {
 
         if (instance == null) {

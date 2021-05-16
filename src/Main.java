@@ -13,9 +13,7 @@ public class Main {
 		new TradingFacade().generateTrading(DepoType.DEPOA);
 		new TradingFacade().generateTrading(DepoType.DEPOB);
 		new TradingFacade().generateTrading(DepoType.DEPOC);
-				
-		// Call the menu
-		
+		new TradingFacade().menuMethod();
 	}
 
 }
