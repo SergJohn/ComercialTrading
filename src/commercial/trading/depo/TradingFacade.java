@@ -129,60 +129,74 @@ public class TradingFacade {
 
 		for (int i = 0; i < listIntern.size(); i++) {
 
+			for (int j = 0; j < i; j++) {
+
 //						 Check if any productNative of the other two companies are available
-			if ((listIntern2.get(i).getProductNative().size() > 3 || listIntern3.get(i).getProductNative().size() > 3)
-					&& (listIntern.get(i).getProductExternal1().size() <= 40
-							|| listIntern.get(i).getProductExternal2().size() <= 40)) {
-				
-				if (listIntern.get(i).getProductExternal1().size() > 40
-						|| listIntern.get(i).getProductExternal2().size() > 40) {
-					
-					System.out.println("Transactions finished, you will be redirected to a menu shortly");
+				if (listIntern2.get(j).getProductNative().size() > 3
+						&& (listIntern.get(i).getProductExternal1().size() <= 40
+								|| listIntern.get(i).getProductExternal2().size() <= 40)) {
 
-				} else {
-					// How much for the product? do we have budget?
-					if (listIntern.get(i).getBudget() > listIntern2.get(i).getPrice()) {
+					if (listIntern.get(i).getProductExternal1().size() > 40
+							|| listIntern.get(i).getProductExternal2().size() > 40) {
 
-						// Add product external1 from productNative of the other companies
-						listIntern.get(i).getProductExternal1().add(listIntern2.get(i).getProductNative().get(0));
+						System.out.println("Transactions finished, you will be redirected to a menu shortly");
 
-						// Subtract from native of the other companies
-						listIntern2.get(i).getProductNative().remove(0);
+					} else {
 
-						// Deduct from the company budget
-						listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern2.get(i).getPrice());
+						// How much for the product? do we have budget?
+						if (listIntern.get(i).getBudget() > listIntern2.get(j).getPrice()) {
 
-						// Send money to the other two companie's budget
-						listIntern2.get(i).setBudget(listIntern2.get(i).getBudget() + listIntern2.get(i).getPrice());
+							// Add product external1 from productNative of the other companies
+							listIntern.get(i).getProductExternal1().add(listIntern2.get(j).getProductNative().get(0));
 
+							// Subtract from native of the other companies
+							listIntern2.get(j).getProductNative().remove(0);
 
-						writeFile(comp1, depoClass2);
-						A.add("Product " + listIntern2.get(i) + " bought by " + comp1 + " on " + new Date() + "\n");
+							// Deduct from the company budget
+							listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern2.get(j).getPrice());
+
+							// Send money to the other two companie's budget
+							listIntern2.get(j)
+									.setBudget(listIntern2.get(j).getBudget() + listIntern2.get(j).getPrice());
+
+							writeFile(comp1, depoClass2);
+							A.add("Product " + listIntern2.get(j) + " bought by " + comp1 + " on " + new Date() + "\n");
+
+						}
+
+//						for(int k = 0; k < i; k++) {
+						if(listIntern3.get(j).getProductNative().size() > 3) {
+							if (listIntern.get(i).getBudget() > listIntern3.get(j).getPrice()) {
+								System.out.println("I is = " + i);
+									System.out.println("J is = " + j);
+									// Add product external2 from productNative of the other companies
+									listIntern.get(i).getProductExternal2().add(listIntern3.get(j).getProductNative().get(0));
+//									System.out.println(listIntern3.get(j).getProductNative().size());
+									// Subtract from native of the other companies
+									listIntern3.get(j).getProductNative().remove(0);
+//									System.out.println(listIntern3.get(j).getProductNative().size());
+									// Deduct from the company budget
+									listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern3.get(j).getPrice());
+
+									// Send money to the other two companie's budget
+									listIntern3.get(j)
+											.setBudget(listIntern3.get(j).getBudget() + listIntern3.get(j).getPrice());
+
+									writeFile(comp1, depoClass3);
+
+									A.add("Product " + listIntern3.get(j) + " bought by " + comp1 + " on " + new Date() + "\n");
+								}
+
+								
+							}
+						}
+						
 
 					}
 
-					if (listIntern.get(i).getBudget() > listIntern3.get(i).getPrice()) {
-
-						// Add product external2 from productNative of the other companies
-						listIntern.get(i).getProductExternal2().add(listIntern3.get(i).getProductNative().get(0));
-
-						// Subtract from native of the other companies
-						listIntern3.get(i).getProductNative().remove(0);
-
-						// Deduct from the company budget
-						listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern3.get(i).getPrice());
-
-						// Send money to the other two companie's budget
-						listIntern3.get(i).setBudget(listIntern3.get(i).getBudget() + listIntern3.get(i).getPrice());
-
-						writeFile(comp1, depoClass3);
-
-						A.add("Product " + listIntern3.get(i) + " bought by " + comp1 + " on " + new Date() + "\n");
-					}
-				}
-
-			} else {
-				System.out.println("Trades no longer available");
+//				} else {
+//					System.out.println("Trades no longer available");
+//				}
 			}
 		}
 
@@ -286,6 +300,7 @@ public class TradingFacade {
 						for (int i = 0; i < listA.size(); i++) {
 							if (listA.get(i).contains("Company B")) {
 								System.out.println(listA.get(i));
+//								System.out.println(listA.get(i));
 							}
 						}
 
