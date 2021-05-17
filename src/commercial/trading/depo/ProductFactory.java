@@ -8,15 +8,15 @@ public class ProductFactory {
 
 		if (depo.equals("DepoA")) {
 
-			return new DepoASingleton(Product.getProduct.PRODUCTA, Product.getProduct.PRODUCTB, Product.getProduct.PRODUCTC);
+			return new DepoASingleton(Product.getProduct.PAPER, Product.getProduct.BOOK, Product.getProduct.INK);
 		}
 		else if (depo.equals("DepoB")) {
 
-			return new DepoBSingleton(Product.getProduct.PRODUCTB, Product.getProduct.PRODUCTA, Product.getProduct.PRODUCTC);
+			return new DepoBSingleton(Product.getProduct.BOOK, Product.getProduct.PAPER, Product.getProduct.INK);
 		}
 		else if (depo.equals("DepoC")) {
 
-			return new DepoCSingleton(Product.getProduct.PRODUCTC, Product.getProduct.PRODUCTA, Product.getProduct.PRODUCTB);
+			return new DepoCSingleton(Product.getProduct.INK, Product.getProduct.PAPER, Product.getProduct.BOOK);
 		}
 
 		return null;

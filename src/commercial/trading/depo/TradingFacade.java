@@ -33,6 +33,12 @@ public class TradingFacade {
 	BufferedWriter writeC;
 
 	static List<String> A = new ArrayList<>();
+	static List<String> aBudget = new ArrayList<>();
+	static List<String> bBudget = new ArrayList<>();
+	static List<String> cBudget = new ArrayList<>();
+	static List<String> Data = new ArrayList<>();
+	static List<getProduct> DataB = new ArrayList<>();
+	static List<getProduct> DataC = new ArrayList<>();
 
 	public TradingFacade() {
 	}
@@ -114,8 +120,6 @@ public class TradingFacade {
 	private void trading(Depo depoClass, Company comp1, Depo depoClass2, Company comp2, Depo depoClass3,
 			Company comp3) {
 
-//		System.out.println("inside trading");
-
 		// Buy and sell actually goes here no matter which company
 
 		List<Depo> listIntern = new ArrayList<>();
@@ -139,8 +143,6 @@ public class TradingFacade {
 					if (listIntern.get(i).getProductExternal1().size() > 40
 							|| listIntern.get(i).getProductExternal2().size() > 40) {
 
-						System.out.println("Transactions finished, you will be redirected to a menu shortly");
-
 					} else {
 
 						// How much for the product? do we have budget?
@@ -160,43 +162,55 @@ public class TradingFacade {
 									.setBudget(listIntern2.get(j).getBudget() + listIntern2.get(j).getPrice());
 
 							writeFile(comp1, depoClass2);
-							A.add("Product " + listIntern2.get(j) + " bought by " + comp1 + " on " + new Date() + "\n");
+							A.add("Trade done between " + depoClass2 + " and " + depoClass + " " + i + " of " + comp1
+									+ " on " + new Date() + "\n");
+
+							aBudget.add("The budget now is: " + listIntern.get(i).getBudget());
+							bBudget.add("The budget now is: " + listIntern2.get(j).getBudget());
+							cBudget.add("The budget now is: " + listIntern3.get(j).getBudget());
+							Data.add("Native Products " + listIntern.get(i).getProductNative().get(0) + " " + listIntern.get(i).getProductNative().size());
+							Data.add("External 1 Products " + listIntern.get(i).getProductExternal1().get(0) + " " + listIntern.get(i).getProductExternal1().size());
 
 						}
 
-//						for(int k = 0; k < i; k++) {
-						if(listIntern3.get(j).getProductNative().size() > 3) {
+						if (listIntern3.get(j).getProductNative().size() > 3) {
 							if (listIntern.get(i).getBudget() > listIntern3.get(j).getPrice()) {
-								System.out.println("I is = " + i);
-									System.out.println("J is = " + j);
-									// Add product external2 from productNative of the other companies
-									listIntern.get(i).getProductExternal2().add(listIntern3.get(j).getProductNative().get(0));
-//									System.out.println(listIntern3.get(j).getProductNative().size());
-									// Subtract from native of the other companies
-									listIntern3.get(j).getProductNative().remove(0);
-//									System.out.println(listIntern3.get(j).getProductNative().size());
-									// Deduct from the company budget
-									listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern3.get(j).getPrice());
 
-									// Send money to the other two companie's budget
-									listIntern3.get(j)
-											.setBudget(listIntern3.get(j).getBudget() + listIntern3.get(j).getPrice());
+								// Add product external2 from productNative of the other companies
+								listIntern.get(i).getProductExternal2()
+										.add(listIntern3.get(j).getProductNative().get(0));
 
-									writeFile(comp1, depoClass3);
+								// Subtract from native of the other companies
+								listIntern3.get(j).getProductNative().remove(0);
 
-									A.add("Product " + listIntern3.get(j) + " bought by " + comp1 + " on " + new Date() + "\n");
-								}
+								// Deduct from the company budget
+								listIntern.get(i)
+										.setBudget(listIntern.get(i).getBudget() - listIntern3.get(j).getPrice());
 
-								
+								// Send money to the other two companie's budget
+								listIntern3.get(j)
+										.setBudget(listIntern3.get(j).getBudget() + listIntern3.get(j).getPrice());
+
+								writeFile(comp1, depoClass3);
+
+								A.add("Trade done between " + depoClass3 + " and " + depoClass + " " + i + " of " + comp1
+										+ " on " + new Date() + "\n");
+
+								aBudget.add("The budget now is: " + listIntern.get(i).getBudget());
+								bBudget.add("The budget now is: " + listIntern2.get(j).getBudget());
+								cBudget.add("The budget now is: " + listIntern3.get(j).getBudget());
+								Data.add("Native Products " + listIntern.get(i).getProductNative().get(0) + " " + listIntern.get(i).getProductNative().size());
+								Data.add("External 2 Products " + listIntern.get(i).getProductExternal2().get(0) + " " + listIntern.get(i).getProductExternal2().size());
+
+//								}
+
 							}
-						}
-						
 
+						}
 					}
 
-//				} else {
-//					System.out.println("Trades no longer available");
-//				}
+				}
+
 			}
 		}
 
@@ -241,7 +255,7 @@ public class TradingFacade {
 
 	}
 
-	public void menuMethod(List<String> listA) {
+	public void menuMethod() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		String choice = "";
 		String innerChoice = "";
@@ -264,8 +278,7 @@ public class TradingFacade {
 
 			switch (choice) {
 			case "1":
-//				showTrades();
-				System.out.println(listA);
+				System.out.println(getA());
 				break;
 
 			case "2":
@@ -288,35 +301,47 @@ public class TradingFacade {
 
 					switch (innerChoice) {
 					case "1":
-						for (int i = 0; i < listA.size(); i++) {
-							if (listA.get(i).contains("Company A")) {
-								System.out.println(listA.get(i));
+						for (int i = 0; i < getA().size(); i++) {
+							if (getA().get(i).contains("Company A")) {
+								System.out.println(getA().get(i));
+								System.out.println(getaBudget().get(i) + " \n");
+								System.out.println(getData().get(i));
+								System.out.println("--------------------------------");
+
 							}
 						}
+						System.out.println("The Company A has a total of " + getData().size() + " Native Products");
 
 						break;
 
 					case "2":
-						for (int i = 0; i < listA.size(); i++) {
-							if (listA.get(i).contains("Company B")) {
-								System.out.println(listA.get(i));
-//								System.out.println(listA.get(i));
+						for (int i = 0; i < getA().size(); i++) {
+							if (getA().get(i).contains("Company B")) {
+								System.out.println(getA().get(i));
+								System.out.println(getbBudget().get(i));
+								System.out.println(getData().get(i));
+								System.out.println("--------------------------------");
 							}
+
 						}
 
 						break;
 
 					case "3":
-						for (int i = 0; i < listA.size(); i++) {
-							if (listA.get(i).contains("Company C")) {
-								System.out.println(listA.get(i));
+						for (int i = 0; i < getA().size(); i++) {
+							if (getA().get(i).contains("Company C")) {
+								System.out.println(getA().get(i));
+								System.out.println(getcBudget().get(i));
+								System.out.println(getData().get(i));
+								System.out.println("--------------------------------");
 							}
+
 						}
 
 						break;
 
 					case "4":
-						menuMethod(listA);
+						menuMethod();
 						break;
 
 					case "5":
@@ -342,18 +367,60 @@ public class TradingFacade {
 
 	}
 
-	private void showTrades() {
-
-		System.out.println(A);
-
-	}
-
 	public static List<String> getA() {
 		return A;
 	}
 
 	public void setA(List<String> a) {
 		A = a;
+	}
+
+	public static List<String> getaBudget() {
+		return aBudget;
+	}
+
+	public static void setaBudget(List<String> aBudget) {
+		TradingFacade.aBudget = aBudget;
+	}
+
+	public static List<String> getbBudget() {
+		return bBudget;
+	}
+
+	public static void setbBudget(List<String> bBudget) {
+		TradingFacade.bBudget = bBudget;
+	}
+
+	public static List<String> getcBudget() {
+		return cBudget;
+	}
+
+	public static void setcBudget(List<String> cBudget) {
+		TradingFacade.cBudget = cBudget;
+	}
+
+	public static List<String> getData() {
+		return Data;
+	}
+
+	public static void setData(List<String> data) {
+		Data = data;
+	}
+
+	public static List<String> getDataB() {
+		return Data;
+	}
+
+	public static void setDataB(List<String> dataB) {
+		Data = dataB;
+	}
+
+	public static List<String> getDataC() {
+		return Data;
+	}
+
+	public static void setDataC(List<String> dataC) {
+		Data = dataC;
 	}
 
 }

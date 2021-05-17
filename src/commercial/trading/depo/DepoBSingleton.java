@@ -83,7 +83,7 @@ public class DepoBSingleton extends Depo {
 	public static DepoBSingleton getInstance() {
 
         if (instance == null) {
-            instance = new DepoBSingleton(Product.getProduct.PRODUCTB, Product.getProduct.PRODUCTA, Product.getProduct.PRODUCTC);
+            instance = new DepoBSingleton(Product.getProduct.BOOK, Product.getProduct.PAPER, Product.getProduct.INK);
         }
         return instance;
     }
