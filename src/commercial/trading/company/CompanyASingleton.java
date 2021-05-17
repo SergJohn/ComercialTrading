@@ -29,7 +29,9 @@ public class CompanyASingleton extends Company {
 //			System.out.println(i);
 			
 		}
-//		System.out.println(Depos);
+//		System.out.println(Depos.get(0).getBudget());
+//		System.out.println(Depos.get(1).getBudget());
+//		System.out.println(Depos.get(3).getBudget());
 
 	}
 	

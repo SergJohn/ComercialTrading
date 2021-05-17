@@ -31,8 +31,8 @@ public class TradingFacade {
 	BufferedWriter writeA;
 	BufferedWriter writeB;
 	BufferedWriter writeC;
-	
-	List<String> A = new ArrayList<>();
+
+	static List<String> A = new ArrayList<>();
 
 	public TradingFacade() {
 	}
@@ -66,9 +66,6 @@ public class TradingFacade {
 
 		if (depo.toString().equalsIgnoreCase("DepoA")) {
 
-//			System.out.println("It is equal, both are A");
-
-			
 			Depo depoClass = DepoASingleton.getInstance();
 			Company comp1 = CompanyASingleton.getInstance();
 
@@ -83,8 +80,6 @@ public class TradingFacade {
 		}
 
 		if (depo.toString().equalsIgnoreCase("DepoB")) {
-
-//			System.out.println("It is equal, both are B");
 
 			Depo depoClass = DepoBSingleton.getInstance();
 			Company comp1 = CompanyBSingleton.getInstance();
@@ -101,8 +96,6 @@ public class TradingFacade {
 
 		if (depo.toString().equalsIgnoreCase("DepoC")) {
 
-//			System.out.println("It is equal, both are C");
-
 			Depo depoClass = DepoCSingleton.getInstance();
 			Company comp1 = CompanyCSingleton.getInstance();
 
@@ -118,7 +111,8 @@ public class TradingFacade {
 
 	}
 
-	private void trading(Depo depoClass, Company comp1, Depo depoClass2, Company comp2, Depo depoClass3, Company comp3) {
+	private void trading(Depo depoClass, Company comp1, Depo depoClass2, Company comp2, Depo depoClass3,
+			Company comp3) {
 
 //		System.out.println("inside trading");
 
@@ -132,149 +126,108 @@ public class TradingFacade {
 
 		List<Depo> listIntern3 = new ArrayList<>();
 		listIntern3.addAll(comp3.getDepos());
-		
-			for (int i = 0; i < listIntern.size(); i++) {
-//				System.out.println("inside 1st for");
-				for (int j = 0; j < i; j++) {
-//					System.out.println("inside 2nd for");
-					for (int k = 0; k < j; k++) {
-//						System.out.println("inside 3nd for");
+
+		for (int i = 0; i < listIntern.size(); i++) {
+
 //						 Check if any productNative of the other two companies are available
-						if ((listIntern2.get(i).getProductNative().size() > 3
-								|| listIntern3.get(i).getProductNative().size() > 3)
-								&& (listIntern.get(i).getProductExternal1().size() <= 40
-										|| listIntern.get(i).getProductExternal2().size() <= 40)) {
+			if ((listIntern2.get(i).getProductNative().size() > 3 || listIntern3.get(i).getProductNative().size() > 3)
+					&& (listIntern.get(i).getProductExternal1().size() <= 40
+							|| listIntern.get(i).getProductExternal2().size() <= 40)) {
+				
+				if (listIntern.get(i).getProductExternal1().size() > 40
+						|| listIntern.get(i).getProductExternal2().size() > 40) {
+					
+					System.out.println("Transactions finished, you will be redirected to a menu shortly");
 
-//							System.out.println("inside first if");
-							if (listIntern.get(i).getProductExternal1().size() > 40
-									|| listIntern.get(i).getProductExternal2().size() > 40) {
-								System.out.println("Transactions finished, you will be redirected to a menu shortly");
+				} else {
+					// How much for the product? do we have budget?
+					if (listIntern.get(i).getBudget() > listIntern2.get(i).getPrice()) {
 
-							} else {
-//								System.out.println("inside else");
-								// How much for the product? do we have budget?
-								if (depoClass.getBudget() > depoClass2.getPrice()) {
+						// Add product external1 from productNative of the other companies
+						listIntern.get(i).getProductExternal1().add(listIntern2.get(i).getProductNative().get(0));
 
-//									System.out.println("Inside first if else");
-//									System.out.println(listIntern.get(i));
-	//
-//									System.out.println(depoClass.getBudget());
-//									System.out.println(listIntern2.get(j).getProductNative().size());
+						// Subtract from native of the other companies
+						listIntern2.get(i).getProductNative().remove(0);
 
-									// Add product external1 from productNative of the other companies
-									listIntern.get(i).getProductExternal1()
-											.add(listIntern2.get(i).getProductNative().get(0));
+						// Deduct from the company budget
+						listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern2.get(i).getPrice());
 
-									// Subtract from native of the other companies
-									listIntern2.get(i).getProductNative().remove(0);
+						// Send money to the other two companie's budget
+						listIntern2.get(i).setBudget(listIntern2.get(i).getBudget() + listIntern2.get(i).getPrice());
 
-//									System.out.println(listIntern2.get(j).getProductNative().size());
 
-									// Deduct from the company budget
-									depoClass.setBudget(depoClass.getBudget() - depoClass2.getPrice());
+						writeFile(comp1, depoClass2);
+						A.add("Product " + listIntern2.get(i) + " bought by " + comp1 + " on " + new Date() + "\n");
 
-//									System.out.println(depoClass.getBudget());
+					}
 
-									// Send money to the other two companie's budget
-									depoClass2.setBudget(depoClass2.getBudget() + depoClass2.getPrice());
+					if (listIntern.get(i).getBudget() > listIntern3.get(i).getPrice()) {
 
-//									System.out.println(depoClass.getBudget());
-//									if(depoClass.getProductNative().get(i).equals(getProduct.PRODUCTA)) {
-//										
-//									}
-									writeFile(comp1, depoClass2);
-									A.add("Product " + depoClass2 + " bought for " + comp1 + " on " + new Date() + "\n");
-//									System.out.println(A);
+						// Add product external2 from productNative of the other companies
+						listIntern.get(i).getProductExternal2().add(listIntern3.get(i).getProductNative().get(0));
 
-								}
+						// Subtract from native of the other companies
+						listIntern3.get(i).getProductNative().remove(0);
 
-								if (depoClass.getBudget() >= depoClass3.getPrice()) {
+						// Deduct from the company budget
+						listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern3.get(i).getPrice());
 
-//									System.out.println("Inside second if");
-//									System.out.println(listIntern.get(i));
+						// Send money to the other two companie's budget
+						listIntern3.get(i).setBudget(listIntern3.get(i).getBudget() + listIntern3.get(i).getPrice());
 
-//									System.out.println(listIntern.get(i).getProductExternal2().size());
+						writeFile(comp1, depoClass3);
 
-									// Add product external2 from productNative of the other companies
-									listIntern.get(i).getProductExternal2()
-											.add(listIntern3.get(i).getProductNative().get(0));
-//									System.out.println("LOOK AT HERE: " + listIntern3.get(k).getProductNative().size());
-
-//									System.out.println(listIntern.get(i).getProductExternal2().size());
-
-									// Subtract from native of the other companies
-									listIntern3.get(i).getProductNative().remove(0);
-
-									// Deduct from the company budget
-									depoClass.setBudget(depoClass.getBudget() - depoClass3.getPrice());
-
-//									System.out.println(depoClass.getBudget());
-
-									// Send money to the other two companie's budget
-									depoClass3.setBudget(depoClass3.getBudget() + depoClass3.getPrice());
-									
-									writeFile(comp1, depoClass3);
-
-								}
-							}
-
-						} else {
-							System.out.println("Trades no longer available");
-						}
+						A.add("Product " + listIntern3.get(i) + " bought by " + comp1 + " on " + new Date() + "\n");
 					}
 				}
 
+			} else {
+				System.out.println("Trades no longer available");
 			}
+		}
 
 	}
 
 	private void writeFile(Company comp1, Depo depoClass) {
-		
-		if(comp1.toString().equals("Company A")) {
+
+		if (comp1.toString().equals("Company A")) {
 			try {
 				writeA = new BufferedWriter(new FileWriter("TradingsA.txt", true));
-				
-//				System.out.println("Writing in a file");
-				writeA.write("ProductExternal from " + depoClass + " was bought for " + comp1 + " on " + new Date() + "\n");
+				writeA.write(
+						"ProductExternal from " + depoClass + " was bought for " + comp1 + " on " + new Date() + "\n");
 				writeA.close();
-//				A.add("Product " + depoClass + " bought for " + comp1 + " on " + new Date() + "\n");
-//				System.out.println(A);
-				
+
 			} catch (Exception e) {
 
 			}
-		} else if(comp1.toString().equals("Company B")) {
-			
+		} else if (comp1.toString().equals("Company B")) {
+
 			try {
 				writeB = new BufferedWriter(new FileWriter("TradingsB.txt", true));
-				
-//				System.out.println("Writing in a file");
-				writeB.write("ProductExternal from " + depoClass + " was bought for " + comp1 + " on " + new Date() + "\n");
+				writeB.write(
+						"ProductExternal from " + depoClass + " was bought for " + comp1 + " on " + new Date() + "\n");
 				writeB.close();
-				
+
 			} catch (Exception e) {
 
 			}
-			
-			
-		} else if(comp1.toString().equals("Company C")) {
-			
+
+		} else if (comp1.toString().equals("Company C")) {
+
 			try {
 				writeC = new BufferedWriter(new FileWriter("TradingsC.txt", true));
-				
-//				System.out.println("Writing in a file");
-				writeC.write("ProductExternal from " + depoClass + " was bought for " + comp1 + " on " + new Date() + "\n");
+				writeC.write(
+						"ProductExternal from " + depoClass + " was bought for " + comp1 + " on " + new Date() + "\n");
 				writeC.close();
 			} catch (Exception e) {
 
 			}
-			
+
 		}
-		
-		
+
 	}
 
-	public void menuMethod() {
+	public void menuMethod(List<String> listA) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		String choice = "";
 		String innerChoice = "";
@@ -297,7 +250,8 @@ public class TradingFacade {
 
 			switch (choice) {
 			case "1":
-				showTrades();
+//				showTrades();
+				System.out.println(listA);
 				break;
 
 			case "2":
@@ -320,19 +274,34 @@ public class TradingFacade {
 
 					switch (innerChoice) {
 					case "1":
-						
+						for (int i = 0; i < listA.size(); i++) {
+							if (listA.get(i).contains("Company A")) {
+								System.out.println(listA.get(i));
+							}
+						}
+
 						break;
 
 					case "2":
+						for (int i = 0; i < listA.size(); i++) {
+							if (listA.get(i).contains("Company B")) {
+								System.out.println(listA.get(i));
+							}
+						}
 
 						break;
 
 					case "3":
+						for (int i = 0; i < listA.size(); i++) {
+							if (listA.get(i).contains("Company C")) {
+								System.out.println(listA.get(i));
+							}
+						}
 
 						break;
 
 					case "4":
-						menuMethod();
+						menuMethod(listA);
 						break;
 
 					case "5":
@@ -359,9 +328,17 @@ public class TradingFacade {
 	}
 
 	private void showTrades() {
-		
+
 		System.out.println(A);
-		
+
+	}
+
+	public static List<String> getA() {
+		return A;
+	}
+
+	public void setA(List<String> a) {
+		A = a;
 	}
 
 }
