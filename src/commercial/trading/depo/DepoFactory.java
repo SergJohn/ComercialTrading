@@ -2,10 +2,19 @@ package commercial.trading.depo;
 
 import java.util.List;
 
-public class ProductFactory {
+/**
+ * @author mrosa
+ * */
+public class DepoFactory {
 
+	/**
+	 * @method getProducts
+	 * @params String depo
+	 * method from Factory Design pattern to create the specific Depos
+	 * */
 	public static Depo getProduct(String depo) {
 
+		// Logic necessary to check and create the desired Depot
 		if (depo.equals("DepoA")) {
 
 			return new DepoASingleton(Product.getProduct.PAPER, Product.getProduct.BOOK, Product.getProduct.INK);

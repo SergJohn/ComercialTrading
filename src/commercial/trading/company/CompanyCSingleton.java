@@ -9,19 +9,24 @@ import commercial.trading.depo.DepoASingleton;
 import commercial.trading.depo.DepoBSingleton;
 import commercial.trading.depo.DepoCSingleton;
 import commercial.trading.depo.Product;
-import commercial.trading.depo.ProductFactory;
+import commercial.trading.depo.DepoFactory;
 
 public class CompanyCSingleton extends Company {
-	
-	List<Depo> Depos;
-	
+		
+	// Private Static Instance of the class declared as NULL
 	private static CompanyCSingleton instance = null;
 	
+	// Constructor
 	private CompanyCSingleton() {
 		
+		// Calling the createDepos() method
 		createDepos();
 	}
 
+	/**
+	 * @method createDepos()
+	 * Method populates the Depo List with 50 new depos creates after calling the Factory class
+	 * */
 	public void createDepos() {
 		
 		Random random = new Random();
@@ -30,11 +35,11 @@ public class CompanyCSingleton extends Company {
 
 		for (int i = 0; i < count; i++) {
 			
-			Depos.add(ProductFactory.getProduct("DepoC"));
+			Depos.add(DepoFactory.getProduct("DepoC"));
 		}
-//		System.out.println(Depos);
 	}
 	
+	// Getters and Setters
 	public List<Depo> getDepos() {
 		return Depos;
 	}
@@ -48,6 +53,11 @@ public class CompanyCSingleton extends Company {
 		return "Company C";
 	}
 	
+	/**
+	 * @method getInstance
+	 * @return instance:CompanyCSingleton
+	 * Checking if the instance exists and retrieving it or if it not creating a new one
+	 * */
 	public static CompanyCSingleton getInstance() {
 
         if (instance == null) {

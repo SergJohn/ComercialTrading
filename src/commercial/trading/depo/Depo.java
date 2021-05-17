@@ -5,8 +5,13 @@ import java.util.List;
 
 import commercial.trading.depo.Product.getProduct;
 
+/**
+ * @author mrosa
+ * 
+ * */
 public abstract class Depo {
 	
+	// Variables defined as Protected to be able to work with them inside the same package
 	protected double budget;
 	protected int minBudget;
 	protected int maxBudget;
@@ -26,9 +31,10 @@ public abstract class Depo {
 	protected List<getProduct> ProductExternal1 = new ArrayList<>();
 	protected List<getProduct> ProductExternal2 = new ArrayList<>();
 
+	// Constructor
 	public Depo() {
 		
-
+		// Default value of some of the variables
 		minBudget = 50;
 		maxBudget = 100;
 		minNative = 15;
@@ -42,7 +48,7 @@ public abstract class Depo {
 	}
 	
 
-
+	// Getters and Setters
 	public double getBudget() {
 		return budget;
 	}

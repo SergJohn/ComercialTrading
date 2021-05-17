@@ -1,6 +1,7 @@
 package commercial.trading.depo;
 
 import java.io.BufferedReader;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,33 +17,47 @@ import commercial.trading.company.CompanyBSingleton;
 import commercial.trading.company.CompanyCSingleton;
 import commercial.trading.depo.Product.getProduct;
 
+/**
+ * @author mrosa
+ * */
 public class TradingFacade {
 
+	// ENUMS to be checked on the generateTrading method
 	public static enum DepoType {
 
 		DEPOA, DEPOB, DEPOC;
 
 	}
-
+	
+	// Variables to hold the ENUM and make easier and cleaner the code
 	DepoType depoA = DepoType.DEPOA;
 	DepoType depoB = DepoType.DEPOB;
 	DepoType depoC = DepoType.DEPOC;
 
+	// BufferedWriters to write to the file after program runs
 	BufferedWriter writeA;
 	BufferedWriter writeB;
 	BufferedWriter writeC;
 
+	// Important Lists to hold the values to be displayed on the console later on
 	static List<String> A = new ArrayList<>();
 	static List<String> aBudget = new ArrayList<>();
 	static List<String> bBudget = new ArrayList<>();
 	static List<String> cBudget = new ArrayList<>();
 	static List<String> Data = new ArrayList<>();
-	static List<getProduct> DataB = new ArrayList<>();
-	static List<getProduct> DataC = new ArrayList<>();
 
+	/**
+	 * Constructor
+	 * */ 
 	public TradingFacade() {
 	}
 
+	// Method created to make the facade work, receiving the type and using a switch to manage the logic
+	/**
+	 * @method generateTrading
+	 * @params Depotype depo
+	 * Method which receives a depo and forward the depo to the method 
+	 * */
 	public void generateTrading(DepoType depo) {
 
 		switch (depo) {
@@ -68,6 +83,12 @@ public class TradingFacade {
 
 	}
 
+	// On this method we will fill the variable of the abstract type with the instance of the referred classes 
+	/**
+	 * @method makeTrading()
+	 * @params DepoType depo, DepoType depo2, DepoType depo3
+	 * Method to get the necessary instances to proceed with the trading.
+	 * */
 	private void makeTrading(DepoType depo, DepoType depo2, DepoType depo3) {
 
 		if (depo.toString().equalsIgnoreCase("DepoA")) {
@@ -80,7 +101,8 @@ public class TradingFacade {
 
 			Depo depoClass3 = DepoCSingleton.getInstance();
 			Company comp3 = CompanyCSingleton.getInstance();
-
+			
+			// After getting the specific instances, calling the trading method
 			trading(depoClass, comp1, depoClass2, comp2, depoClass3, comp3);
 
 		}
@@ -96,6 +118,7 @@ public class TradingFacade {
 			Depo depoClass3 = DepoCSingleton.getInstance();
 			Company comp3 = CompanyCSingleton.getInstance();
 
+			// After getting the specific instances, calling the trading method
 			trading(depoClass, comp1, depoClass2, comp2, depoClass3, comp3);
 
 		}
@@ -111,17 +134,30 @@ public class TradingFacade {
 			Depo depoClass3 = DepoBSingleton.getInstance();
 			Company comp3 = CompanyBSingleton.getInstance();
 
+			// After getting the specific instances, calling the trading method
 			trading(depoClass, comp1, depoClass2, comp2, depoClass3, comp3);
 
 		}
 
 	}
 
+	/**
+	 * @method trading()
+	 * @params Depo d, Company c, Depo d2, Company c2, Depo d3, Company c3
+	 * Method which executes the trades and calls the writer afterwards
+	 * */
 	private void trading(Depo depoClass, Company comp1, Depo depoClass2, Company comp2, Depo depoClass3,
 			Company comp3) {
 
-		// Buy and sell actually goes here no matter which company
+		/*
+		 * Buy and sell actually goes here no matter which company, because we have got the instances and passed them
+		 * after checking in a if where they came from
+		 * */ 
 
+		/*
+		 * Accessing the 50 depos of each Company, because through the instances it was not possible, because the instance is singleton
+		 * and retrieves only its depo and products
+		 * */ 
 		List<Depo> listIntern = new ArrayList<>();
 		listIntern.addAll(comp1.getDepos());
 
@@ -130,12 +166,14 @@ public class TradingFacade {
 
 		List<Depo> listIntern3 = new ArrayList<>();
 		listIntern3.addAll(comp3.getDepos());
+		
+		// Nested for loop to "iterate" and run on each one of the 50 depos
 
 		for (int i = 0; i < listIntern.size(); i++) {
 
 			for (int j = 0; j < i; j++) {
 
-//						 Check if any productNative of the other two companies are available
+				// Checking if any productNative of the other Companies are available
 				if (listIntern2.get(j).getProductNative().size() > 3
 						&& (listIntern.get(i).getProductExternal1().size() <= 40
 								|| listIntern.get(i).getProductExternal2().size() <= 40)) {
@@ -148,23 +186,26 @@ public class TradingFacade {
 						// How much for the product? do we have budget?
 						if (listIntern.get(i).getBudget() > listIntern2.get(j).getPrice()) {
 
-							// Add product external1 from productNative of the other companies
+							// Adding product external1 from productNative of the other companies
 							listIntern.get(i).getProductExternal1().add(listIntern2.get(j).getProductNative().get(0));
 
-							// Subtract from native of the other companies
+							// Subtracting from native of the other company
 							listIntern2.get(j).getProductNative().remove(0);
 
-							// Deduct from the company budget
+							// Deducting from the company budget
 							listIntern.get(i).setBudget(listIntern.get(i).getBudget() - listIntern2.get(j).getPrice());
 
-							// Send money to the other two companie's budget
+							// Sending money to the other company's budget
 							listIntern2.get(j)
 									.setBudget(listIntern2.get(j).getBudget() + listIntern2.get(j).getPrice());
 
+							// Calling the method to write transaction by transaction
 							writeFile(comp1, depoClass2);
+							
+							// Storing the results between two companie's trades in the proper List to displayed later on
 							A.add("Trade done between " + depoClass2 + " and " + depoClass + " " + i + " of " + comp1
 									+ " on " + new Date() + "\n");
-
+							
 							aBudget.add("The budget now is: " + listIntern.get(i).getBudget());
 							bBudget.add("The budget now is: " + listIntern2.get(j).getBudget());
 							cBudget.add("The budget now is: " + listIntern3.get(j).getBudget());
@@ -173,6 +214,7 @@ public class TradingFacade {
 
 						}
 
+						// Checking if any productNative of the other Company are available
 						if (listIntern3.get(j).getProductNative().size() > 3) {
 							if (listIntern.get(i).getBudget() > listIntern3.get(j).getPrice()) {
 
@@ -191,8 +233,10 @@ public class TradingFacade {
 								listIntern3.get(j)
 										.setBudget(listIntern3.get(j).getBudget() + listIntern3.get(j).getPrice());
 
+								// Calling the method to write transaction by transaction
 								writeFile(comp1, depoClass3);
-
+								
+								// Storing the results of the other companie's trades in the proper List to displayed later on
 								A.add("Trade done between " + depoClass3 + " and " + depoClass + " " + i + " of " + comp1
 										+ " on " + new Date() + "\n");
 
@@ -201,8 +245,6 @@ public class TradingFacade {
 								cBudget.add("The budget now is: " + listIntern3.get(j).getBudget());
 								Data.add("Native Products " + listIntern.get(i).getProductNative().get(0) + " " + listIntern.get(i).getProductNative().size());
 								Data.add("External 2 Products " + listIntern.get(i).getProductExternal2().get(0) + " " + listIntern.get(i).getProductExternal2().size());
-
-//								}
 
 							}
 
@@ -216,6 +258,11 @@ public class TradingFacade {
 
 	}
 
+	/**
+	 * @method writeFile()
+	 * @params Company, Depo
+	 * method will instantiate a BufferedWriter and write the transaction to a file
+	 * */
 	private void writeFile(Company comp1, Depo depoClass) {
 
 		if (comp1.toString().equals("Company A")) {
@@ -255,6 +302,10 @@ public class TradingFacade {
 
 	}
 
+	/**
+	 * @method menuMethod()
+	 * method to display the menu to the user see the trades.
+	 * */
 	public void menuMethod() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		String choice = "";
@@ -310,7 +361,6 @@ public class TradingFacade {
 
 							}
 						}
-						System.out.println("The Company A has a total of " + getData().size() + " Native Products");
 
 						break;
 
@@ -366,6 +416,8 @@ public class TradingFacade {
 		} while (!choice.equals("1") || !choice.equals("2") || !choice.equals("3"));
 
 	}
+	
+	// Getters and Setters
 
 	public static List<String> getA() {
 		return A;
@@ -411,16 +463,5 @@ public class TradingFacade {
 		return Data;
 	}
 
-	public static void setDataB(List<String> dataB) {
-		Data = dataB;
-	}
-
-	public static List<String> getDataC() {
-		return Data;
-	}
-
-	public static void setDataC(List<String> dataC) {
-		Data = dataC;
-	}
 
 }
